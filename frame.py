@@ -33,6 +33,8 @@ class Mi_Interfaz(Frame):
             mapaSeleccionado = Mapa.mapa3
         elif mapa == 'Nuevo Mapa':
             mapaSeleccionado = Mapa.NuevoMapa
+        elif mapa == 'Mapa sin Solucion':
+            mapaSeleccionado = Mapa.MapaSinSolucion
         #Código para los mensajes de error:
         valido1 = False
         valido2 = False
@@ -134,7 +136,7 @@ class Mi_Interfaz(Frame):
         self.frame1 = Frame(self, bg="white")
         self.frame1.place(x=25, y=65, width=550, height=450)
         Label(self.frame1, text="Elija un mapa: ", bg="white").place(x=25, y= 415)
-        self.opciones = ['Mapa 1', 'Mapa 2', 'Mapa 3', 'Nuevo Mapa']
+        self.opciones = ['Mapa 1', 'Mapa 2', 'Mapa 3', 'Nuevo Mapa', 'Mapa sin Solucion']
         self.lista_mapas = ttk.Combobox(self.frame1, width=15, state="readonly", values= self.opciones)
         self.lista_mapas.place(x= 150, y=415)
         self.lista_mapas.current(0)
@@ -155,6 +157,8 @@ class Mi_Interfaz(Frame):
                 self.imagenSeleccionada = "imagenes/mapa3.png"
             elif mapa == 'Nuevo Mapa':
                 self.imagenSeleccionada = "imagenes/MapaNuevo.png"
+            elif mapa == 'Mapa sin Solucion':
+                self.imagenSeleccionada = "imagenes/MapaSinSolucion.png"
                 
         
             self.fondo1_image = PhotoImage(file = self.imagenSeleccionada)
