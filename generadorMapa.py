@@ -28,16 +28,16 @@ def crear_mapa():
     return mapa
 
 # Crear propio mapa
-mapa = crear_mapa()
+#mapa = crear_mapa()
 
 # Cargar mapa
 mapa = cargar_mapa("MapaSinSolucion.txt")
 
 # Mapa aleatorio
-mapa = generar_mapa_aleatorio(10, 10)
+#mapa = generar_mapa_aleatorio(10, 10)
 
 # Guardar el mapa generado en un archivo de texto
-guardar_mapa("MapaSinSolucion.txt", mapa)
+#guardar_mapa("MapaSinSolucion.txt", mapa)
 
 
 #################################################
@@ -74,8 +74,8 @@ for i in range(m):
 # Configurar las etiquetas de las filas (letras)
 ax.set_xticks(np.arange(0, m, 1))
 ax.set_yticks(np.arange(0, n, 1))
-ax.set_xticklabels(range(1, m + 1))
-ax.set_yticklabels([chr(65 + i) for i in range(n)])
+ax.set_xticklabels(range(1, m + 1), fontweight='bold')
+ax.set_yticklabels([chr(97 + i) for i in range(n)], fontweight='bold')
 
 # Configurar los límites de los ejes para mostrar completamente la cuadrícula
 ax.set_xlim(-0.5, m - 0.5)

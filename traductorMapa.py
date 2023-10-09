@@ -35,4 +35,6 @@ with open("MapaSinSolucion.txt", 'r') as archivo:
 
 diccionario_vecinos = generar_diccionario_vecinos(mapa)
 for casilla, vecinos in diccionario_vecinos.items():
-    print(f'{casilla}: {vecinos}')
+    print(f"'{casilla}': {vecinos},")
+
+print("\nCopie y pegue el mapa de arriba en un nuevo diccionario de mapas.py")
