@@ -1,0 +1,97 @@
+import matplotlib.pyplot as plt
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+import numpy as np
+
+
+def convertir_a_coordenadas(ruta, cant_filas):
+    coordenadas = []
+    for celda in ruta:
+        columna = int(celda[1]) - 1
+        fila = ord('a') - ord(celda[0]) + (cant_filas - 1)
+        coordenadas.append([fila, columna])
+    return coordenadas
+
+
+def mostrar_ruta_en_mapa(mapa, ruta):
+    # Definir texturas
+    texturas = {
+        0: 'imagenes/zona0.png',
+        1: 'imagenes/zona1.png',
+        2: 'imagenes/zona2.png',
+        3: 'imagenes/zona3.png',
+        'ruta': 'imagenes/ruta.png'
+    }
+
+    # Convertir el archivo en una matriz
+    matriz = [list(map(int, fila.strip()))
+              for fila in mapa.strip().split('\n')]
+
+    # Calcular el número de filas y columnas
+    n, m = len(matriz), len(matriz[0])
+
+    # Crear lista de coordenadas de la ruta
+    coordenadas = convertir_a_coordenadas(ruta, n)
+
+    # Crear una figura y ejes
+    fig, ax = plt.subplots(figsize=(m, n))
+
+    # Dibujar la cuadrícula con las texturas y a la ruta asociada
+    for i in range(m):
+        for j in range(n):
+            textura_file = texturas[matriz[j][i]]
+            img = plt.imread(textura_file)
+            imagebox = OffsetImage(img, zoom=1.6)
+            ab = AnnotationBbox(imagebox, (i, n - 1 - j), frameon=False)
+            ax.add_artist(ab)
+
+            if [j, i] in coordenadas:
+                textura_file = texturas['ruta']
+                img = plt.imread(textura_file)
+                imagebox = OffsetImage(img, zoom=1.00)
+                ab = AnnotationBbox(imagebox, (i, n - 1 - j), frameon=False)
+                ax.add_artist(ab)
+
+    # Configurar las etiquetas de las filas (letras)
+    ax.set_xticks(np.arange(0, m, 1))
+    ax.set_yticks(np.arange(0, n, 1))
+    ax.set_xticklabels(range(1, m + 1), fontweight='bold')
+    ax.set_yticklabels([chr(97 + i) for i in range(n)], fontweight='bold')
+
+    # Configurar los límites de los ejes para mostrar completamente la cuadrícula
+    ax.set_xlim(-0.5, m - 0.5)
+    ax.set_ylim(-0.5, n - 0.5)
+
+    # Ocultar las líneas de los ejes
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+
+    # Mostrar solo el número de casilla y las texturas
+    plt.tick_params(axis='both', which='both', bottom=False, top=False,
+                    labelbottom=True, left=False, right=False, labelleft=True)
+
+    # Mostrar el mapa
+    plt.show()
+
+if __name__=="__main__":
+    
+    # Mapa de prueba
+    mapa = """
+        1111111111
+        1111111111
+        1111111111
+        1111111111
+        1002111111
+        1002111111
+        1112111111
+        1111111111
+        1111111111
+        1111111111
+        """
+    
+    # Ruta de Prueba
+    ruta = ['a1', 'b1', 'c1', 'd1', 'd2', 'd3', 'd4', 'e4']
+    
+    # Mostrar el mapa con la ruta
+    mostrar_ruta_en_mapa(mapa, ruta)
