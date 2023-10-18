@@ -1,10 +1,13 @@
-
 # Se importan las librerías necesarias
 from tkinter import *
 from tkinter import ttk, messagebox
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from PIL import Image
 from arbol import Nodo
 from mapas import Mapa
 from ambasBusquedas import Metodo_de_Busqueda
+from visualizador_ruta import mostrar_ruta_en_mapa
 
 
 class Mi_Interfaz(Frame):
@@ -18,6 +21,8 @@ class Mi_Interfaz(Frame):
         self.frame_3()
         self.frame_4()
         self.frame_5()
+        
+        self.canvas_widget = None # Atributo del Canvas
   
 #-------------------------------------------------------------------------#      
     def busquedaSolicitada(self, x):
@@ -27,14 +32,20 @@ class Mi_Interfaz(Frame):
 
         if mapa == 'Mapa 1':
             mapaSeleccionado = Mapa.mapa1
+            mapaTexturas = Mapa.mapa1Texturas
         elif mapa == 'Mapa 2':
             mapaSeleccionado = Mapa.mapa2
+            mapaTexturas = Mapa.mapa2Texturas
         elif mapa == 'Mapa 3':
             mapaSeleccionado = Mapa.mapa3
+            mapaTexturas = Mapa.mapa3Texturas
         elif mapa == 'Nuevo Mapa':
             mapaSeleccionado = Mapa.NuevoMapa
+            mapaTexturas = Mapa.mapaNuevoTexturas
         elif mapa == 'Mapa sin Solucion':
             mapaSeleccionado = Mapa.MapaSinSolucion
+            mapaTexturas = Mapa.mapaSinSolucionTexturas
+            
         #Código para los mensajes de error:
         valido1 = False
         valido2 = False
@@ -63,7 +74,18 @@ class Mi_Interfaz(Frame):
         resultado.append(inicio)
         resultado.reverse() 
         coste = str(nodo_solucion.get_coste())
-
+        
+        # Obtener la figura de la ruta
+        figura_ruta = mostrar_ruta_en_mapa(mapaTexturas, resultado)
+        if valido1 == True and valido2 == True:
+            if self.canvas_widget:
+                self.canvas_widget.destroy()
+        # Crear un widget de Canvas para la ruta
+            canvas = FigureCanvasTkAgg(figura_ruta, master=self)
+            self.canvas_widget = canvas.get_tk_widget()
+        # Colocar el canvas_widget
+            self.canvas_widget.place(in_=self.fondo1, x=53, y=-17)
+            
         #Código de diferentes cuadros de texto:
         cuadroParaMostrarOrigen = Entry(self.frame4)
         cuadroParaMostrarOrigen.place(x=165, y=5, width=30)
@@ -140,14 +162,19 @@ class Mi_Interfaz(Frame):
         self.lista_mapas = ttk.Combobox(self.frame1, width=15, state="readonly", values= self.opciones)
         self.lista_mapas.place(x= 150, y=415)
         self.lista_mapas.current(0)
+        self.canvas_widget = None
       
         self.fondo1 = Label(self.frame1, bg= "white")
         self.fondo1.place(x=15, y=15, width = 520, height= 380)
-
-
+        
         #Código que muestra la imagen del mapa seleccionado:
-            #Dentro de éste metodo es donde se debe agregar otra condición "elif" cuando se quiera agregar otra imagen de mapa.
+        #Dentro de éste metodo es donde se debe agregar otra condición "elif" cuando se quiera agregar otra imagen de mapa.
+
         def imagenDeFondo():
+            # Destruir el widget del lienzo existente, si hay
+            if self.canvas_widget:
+                self.canvas_widget.destroy()
+
             mapa = self.lista_mapas.get()
             if mapa == 'Mapa 1':
                 self.imagenSeleccionada = "imagenes/mapa1.png"
@@ -159,13 +186,11 @@ class Mi_Interfaz(Frame):
                 self.imagenSeleccionada = "imagenes/MapaNuevo.png"
             elif mapa == 'Mapa sin Solucion':
                 self.imagenSeleccionada = "imagenes/MapaSinSolucion.png"
-                
-        
-            self.fondo1_image = PhotoImage(file = self.imagenSeleccionada)
+
+            self.fondo1_image = PhotoImage(file=self.imagenSeleccionada)
             self.fondo1["image"] = self.fondo1_image
 
-
-        verMapa = Button(self.frame1, text="Ver", command= imagenDeFondo)
+        verMapa = Button(self.frame1, text="Ver", command=imagenDeFondo)
         verMapa.config(bg = "snow3", cursor= "hand2", bd=2)
         verMapa.place(x=300, y=410, width=70, height=27)
 

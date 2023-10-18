@@ -20,18 +20,25 @@ def generar_mapa_aleatorio(m, n):
     return mapa
 
 def crear_mapa():
-    mapa = """
-    02121
-    12212
-    00120
-    """
+    mapa ="""
+            0110220110
+            1311221131
+            1102332011
+            1121331211
+            0233003320
+            0233003320
+            1121331211
+            1102332011
+            1311221131
+            0110220110
+            """
     return mapa
 
 # Crear propio mapa
-#mapa = crear_mapa()
+mapa = crear_mapa()
 
 # Cargar mapa
-mapa = cargar_mapa("MapaSinSolucion.txt")
+#mapa = cargar_mapa("MapaSinSolucion.txt")
 
 # Mapa aleatorio
 #mapa = generar_mapa_aleatorio(10, 10)

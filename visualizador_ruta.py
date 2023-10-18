@@ -6,7 +6,10 @@ import numpy as np
 def convertir_a_coordenadas(ruta, cant_filas):
     coordenadas = []
     for celda in ruta:
-        columna = int(celda[1]) - 1
+        if len(celda) >= 3:
+            columna = int(celda[1]+celda[2]) - 1
+        else:
+            columna = int(celda[1]) - 1
         fila = ord('a') - ord(celda[0]) + (cant_filas - 1)
         coordenadas.append([fila, columna])
     return coordenadas
@@ -23,8 +26,7 @@ def mostrar_ruta_en_mapa(mapa, ruta):
     }
 
     # Convertir el archivo en una matriz
-    matriz = [list(map(int, fila.strip()))
-              for fila in mapa.strip().split('\n')]
+    matriz = [list(map(int, fila.strip()))for fila in mapa.strip().split('\n')]
 
     # Calcular el número de filas y columnas
     n, m = len(matriz), len(matriz[0])
@@ -33,21 +35,25 @@ def mostrar_ruta_en_mapa(mapa, ruta):
     coordenadas = convertir_a_coordenadas(ruta, n)
 
     # Crear una figura y ejes
-    fig, ax = plt.subplots(figsize=(m, n))
-
-    # Dibujar la cuadrícula con las texturas y a la ruta asociada
+    fig, ax = plt.subplots(figsize=(5.7, 5.7))
+    
+    # Set del zoom 
+    zoomTextura = 1.7 if 8 > n >= 6 else (1.00 if n > 5 else 2.5)
+    zoomRuta = 1.2 if 8 > n >= 6 else (0.75 if n > 5 else 1.55)
+    
+    # Dibujar la cuadrícula con las texturas y la ruta asociada
     for i in range(m):
         for j in range(n):
             textura_file = texturas[matriz[j][i]]
             img = plt.imread(textura_file)
-            imagebox = OffsetImage(img, zoom=1.6)
+            imagebox = OffsetImage(img, zoom=zoomTextura)
             ab = AnnotationBbox(imagebox, (i, n - 1 - j), frameon=False)
             ax.add_artist(ab)
 
             if [j, i] in coordenadas:
                 textura_file = texturas['ruta']
                 img = plt.imread(textura_file)
-                imagebox = OffsetImage(img, zoom=1.00)
+                imagebox = OffsetImage(img, zoom=zoomRuta)
                 ab = AnnotationBbox(imagebox, (i, n - 1 - j), frameon=False)
                 ax.add_artist(ab)
 
@@ -71,27 +77,25 @@ def mostrar_ruta_en_mapa(mapa, ruta):
     plt.tick_params(axis='both', which='both', bottom=False, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)
 
-    # Mostrar el mapa
-    plt.show()
+    # Retornar la figura y el eje
+    return fig
+
 
 if __name__=="__main__":
     
     # Mapa de prueba
-    mapa = """
-        1111111111
-        1111111111
-        1111111111
-        1111111111
-        1002111111
-        1002111111
-        1112111111
-        1111111111
-        1111111111
-        1111111111
-        """
+    mapaNuevoTexturas ="""
+            1111
+            1002
+            1002
+            1112
+            """
     
     # Ruta de Prueba
-    ruta = ['a1', 'b1', 'c1', 'd1', 'd2', 'd3', 'd4', 'e4']
+    ruta = ['b1', 'c1', 'd1', 'd2', 'd3', 'd4']
     
     # Mostrar el mapa con la ruta
-    mostrar_ruta_en_mapa(mapa, ruta)
+    figura = mostrar_ruta_en_mapa(mapaNuevoTexturas, ruta)
+    
+    # Mostrar la figura
+    plt.show()
