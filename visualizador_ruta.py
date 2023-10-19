@@ -85,15 +85,21 @@ if __name__=="__main__":
     
     # Mapa de prueba
     mapaNuevoTexturas ="""
-            1111
-            1002
-            1002
-            1112
+            1223100032
+            3232223201
+            1312321201
+            0023223322
+            1113020012
+            3303003333
+            1023033232
+            1200020210
+            2031202021
+            0230103030
             """
     
     # Ruta de Prueba
-    ruta = ['b1', 'c1', 'd1', 'd2', 'd3', 'd4']
-    
+    #ruta = ['b1', 'c1', 'd1', 'd2', 'd3', 'd4']
+    ruta =[]
     # Mostrar el mapa con la ruta
     figura = mostrar_ruta_en_mapa(mapaNuevoTexturas, ruta)
     
