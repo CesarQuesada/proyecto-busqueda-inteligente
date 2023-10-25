@@ -12,7 +12,7 @@ from visualizador_ruta import mostrar_ruta_en_mapa
 
 class Mi_Interfaz(Frame):
     def __init__(self, master=None):
-        super().__init__(master, width=800, height=600)    
+        super().__init__(master, width=900, height=700)    
         self.master = master
         self.pack()
         self.config(bg="azure3")
@@ -60,11 +60,16 @@ class Mi_Interfaz(Frame):
         if valido2 == False:
             messagebox.showwarning(message="Casilla de destino inválida. Intente nuevamente", title="Título")
 
-        #Código que ejecuta el método de búsqueda seleccionado:
-        if x==1:
-            nodo_solucion = Metodo_de_Busqueda(mapaSeleccionado, inicio, final).buscar_solucion_BFS()
-        elif x==2:
-            nodo_solucion = Metodo_de_Busqueda(mapaSeleccionado, inicio, final).buscar_solucion_UCS()
+        if valido1 and valido2:
+            #Código que ejecuta el método de búsqueda seleccionado:
+            if x==1:
+                nodo_solucion = Metodo_de_Busqueda(mapaSeleccionado, inicio, final).buscar_solucion_BFS()
+            elif x==2:
+                nodo_solucion = Metodo_de_Busqueda(mapaSeleccionado, inicio, final).buscar_solucion_UCS()
+            elif x==3:
+                nodo_solucion = Metodo_de_Busqueda(mapaSeleccionado, inicio, final).buscar_solucion_Bidireccional('BFS')
+            elif x==4:
+                nodo_solucion = Metodo_de_Busqueda(mapaSeleccionado, inicio, final).buscar_solucion_Bidireccional('UCS')
 
         resultado = []
         nodo = nodo_solucion
@@ -116,7 +121,7 @@ class Mi_Interfaz(Frame):
 
     def frame_0(self):
         self.frame0 = Frame(self, bg= "white")
-        self.frame0.place(x=25, y=65, width=550, height=450)
+        self.frame0.place(x=25, y=65, width=550, height=505)
 
         self.frameTitle = Frame(self, bg="azure3")
         self.frameTitle.place(x=25, y= 15, width=550, height= 40)
@@ -128,23 +133,25 @@ class Mi_Interfaz(Frame):
         Label(self.frame0, text="Por medio de esta aplicación, usted podrá explorar los métodos de búsqueda:", bg="white").place(x=10,y=10)
         Label(self.frame0, text=" -Por amplitud", bg="white").place(x=30,y=30)
         Label(self.frame0, text=" -Por coste uniforme", bg="white").place(x=30,y=50)
+        Label(self.frame0, text=" -Por búsqueda bidireccional empleando búsqueda por amplitud", bg="white").place(x=30,y=70)
+        Label(self.frame0, text=" -Por búsqueda bidireccional empleando búsqueda por coste uniforme", bg="white").place(x=30,y=90)
 
         self.fondo0 = Text(self.frame0, bg = "beige", padx=5, pady=5)
-        self.fondo0.place(x=10, y=70, width=530, height=155)
+        self.fondo0.place(x=10, y=120, width=530, height=155)
         self.fondo0.insert(INSERT, " Esta aplicación simula el recorrido de un robot dentro de un mapa dividido en \n casillas.  Cada casilla recorrida implica un consumo de energía del robot, en \n donde, dependiendo del tipo de terreno, se tendrá mayor o menor consumo. \n Por medio de los algoritmos de búsqueda, es posible calcular la ruta más cor-\n ta entre dos casillas sin importar la energía consumida o calcular la ruta de \n menor consumo de energía sin importar la distancia recorrida.  Cada casilla \n tiene un nombre compuesto por su fila (letra en minúscula) y columna (núme- \n ro). Por ejemplo, la casilla inferior izquierda de cada mapa sería la “a1” ")
         self.fondo0.config(state="disable", font=("Verdana",10))
         
-        Label(self.frame0, text="Indicaciones:", font="Verdana 11 bold", bg="white").place(x=20, y=235)
-        Label(self.frame0, text="1- Seleccione el mapa que desee recorrer y luego presione el botón “Ver”.", bg="white").place(x=20,y=260)
-        Label(self.frame0, text="2- Para calcular una ruta entre dos puntos, elija una casilla ORIGEN y una ca- \n silla  DESTINO, indicándolas en los cuadros de la parte superior derecha.", bg="white").place(x=20,y=280)
-        Label(self.frame0, text="3- Seleccione el tipo de búsqueda que desea realizar, presionando alguno de \n los dos	botones de  la parte derecha..", bg="white").place(x=20,y=315)
-        Label(self.frame0, text="4- La ruta calculada se mostrará en la parte inferior de la pantalla, indicando \n cada casilla por la que se debe recorrer el mapa. ", bg="white").place(x=20,y=350)
-        Label(self.frame0, text="5- Para calcular una nueva ruta, repita los pasos anteriores.", bg="white").place(x=20,y=385)
+        Label(self.frame0, text="Indicaciones:", font="Verdana 11 bold", bg="white").place(x=20, y=280)
+        Label(self.frame0, text="1- Seleccione el mapa que desee recorrer y luego presione el botón “Ver”.", bg="white").place(x=20,y=300)
+        Label(self.frame0, text="2- Para calcular una ruta entre dos puntos, elija una casilla ORIGEN y una ca- \n silla  DESTINO, indicándolas en los cuadros de la parte superior derecha.", bg="white").place(x=20,y=320)
+        Label(self.frame0, text="3- Seleccione el tipo de búsqueda que desea realizar, presionando alguno de \n los dos	botones de  la parte derecha..", bg="white").place(x=20,y=360)
+        Label(self.frame0, text="4- La ruta calculada se mostrará en la parte inferior de la pantalla, indicando \n cada casilla por la que se debe recorrer el mapa. ", bg="white").place(x=20,y=400)
+        Label(self.frame0, text="5- Para calcular una nueva ruta, repita los pasos anteriores.", bg="white").place(x=20,y=440)
 
 
         boton1 = Button(self.frame0, text="Entendido!", command= self.frame_1)
         boton1.config(bg = "snow3", cursor= "hand2", bd=2)
-        boton1.place(x=400, y=410, width=100, height=27)
+        boton1.place(x=400, y=470, width=100, height=27)
 
  #---------------------------FRAME 1---------------------------------------#
  # Este es el frame principal, en donde se muestran las indicaciones iniciales y la imagen del mapa seleccionado.
@@ -154,9 +161,11 @@ class Mi_Interfaz(Frame):
         self.entrada_destino.config(state=NORMAL)
         self.boton1.config(state=NORMAL)
         self.boton2.config(state=NORMAL)
+        self.boton3.config(state=NORMAL)
+        self.boton4.config(state=NORMAL)
         
         self.frame1 = Frame(self, bg="white")
-        self.frame1.place(x=25, y=65, width=550, height=450)
+        self.frame1.place(x=25, y=65, width=550, height=500)
         Label(self.frame1, text="Elija un mapa: ", bg="white").place(x=25, y= 415)
         self.opciones = ['Mapa 1', 'Mapa 2', 'Mapa 3', 'Nuevo Mapa', 'Mapa sin Solucion']
         self.lista_mapas = ttk.Combobox(self.frame1, width=15, state="readonly", values= self.opciones)
@@ -203,7 +212,7 @@ class Mi_Interfaz(Frame):
 # Este frame es el que está ubicado en la parte superior derecha. Es el que muestra los cuadros donde se ingresan las casillas de origen y destino, además de los botones de búsqueda.
     def frame_2(self):
         self.frame2 = Frame(self, bg = "gainsboro")
-        self.frame2.place(x=580, y=65, width=195, height=240)
+        self.frame2.place(x=580, y=65, width=300, height=400)
 
         Label(self.frame2, text= "Origen: ").place(x= 25, y= 20)
         self.entrada_origen = Entry(self.frame2, width= 7)
@@ -215,23 +224,31 @@ class Mi_Interfaz(Frame):
         self.entrada_destino.place(x=90, y= 50)
         self.entrada_destino.config(state=DISABLED)
 
-        Label(self.frame2, text="Seleccione el tipo de \n búsqueda:").place(x=25, y= 100)
+        Label(self.frame2, text="Seleccione el tipo de búsqueda:").place(x=25, y= 100)
         self.boton1 = Button(self.frame2, text="Amplitud", command= lambda:self.busquedaSolicitada(1))  #para ingresar un metodo con parametros se usa: labda: comand funcion()
         self.boton1.config(bg = "snow3", cursor= "hand2", bd=2, state=DISABLED)
-        self.boton1.place(x=10, y=140, width=175, height=30)
+        self.boton1.place(x=10, y=140, width=250, height=30)
 
         self.boton2 = Button(self.frame2, text="Coste Uniforme", command= lambda:self.busquedaSolicitada(2))  #para ingresar un metodo con parametros se usa: labda: comand funcion()
         self.boton2.config(bg = "snow3", cursor= "hand2", bd=2, state=DISABLED)
-        self.boton2.place(x=10, y=180, width=175, height=30)
+        self.boton2.place(x=10, y=180, width=250, height=30)
+
+        self.boton3 = Button(self.frame2, text="Bidireccional (Amplitud)", command= lambda:self.busquedaSolicitada(3))  #para ingresar un metodo con parametros se usa: labda: comand funcion()
+        self.boton3.config(bg = "snow3", cursor= "hand2", bd=2, state=DISABLED)
+        self.boton3.place(x=10, y=220, width=250, height=30)
+
+        self.boton4 = Button(self.frame2, text="Bidireccional (Coste Uniforme)", command= lambda:self.busquedaSolicitada(4))  #para ingresar un metodo con parametros se usa: labda: comand funcion()
+        self.boton4.config(bg = "snow3", cursor= "hand2", bd=2, state=DISABLED)
+        self.boton4.place(x=10, y=260, width=250, height=30)
 
 
 #---------------------------------FRAME 3---------------------------------------#
 #Este frame es el que se encuentra justo debajo del frame anterior. Muestra información sobre los mapas.
     def frame_3(self):
         self.frame3 = Frame(self, bg= "gainsboro")
-        self.frame3.place(x=580, y=313, width=195, height=202)
+        self.frame3.place(x=580, y=370, width=300, height=200)
 
-        Label(self.frame3, text= "Coste de energía por \n tipo de terreno: ", font="Verdana 9 bold").place(x=25, y=5)   
+        Label(self.frame3, text= "Coste de energía por tipo de terreno: ", font="Verdana 9 bold").place(x=25, y=5)   
 
         self.zona0 = Label(self.frame3, bg= "white")
         self.zona0.place(x=15,y=48, width=32, height=32) 
@@ -261,7 +278,7 @@ class Mi_Interfaz(Frame):
 #Este frame está unbicado en la parte inferior izquierda. Es el que muestra el resultado de la ruta calculada.
     def frame_4(self):
         self.frame4 = Frame(self, bg= "gainsboro")
-        self.frame4.place(x=25, y=525, width=550, height=65)
+        self.frame4.place(x=25, y=600, width=550, height=65)
 
         Label(self.frame4, text= "La ruta calculada entre ").place(x=10, y=5)        
         Label(self.frame4, text= "y ").place(x=200, y=5)
@@ -271,7 +288,7 @@ class Mi_Interfaz(Frame):
 #Este frame está ubicado en la parte inferior derecha. Es el que muestra el coste de la ruta calculada.
     def frame_5(self):
         self.frame5 = Frame(self, bg= "gainsboro")
-        self.frame5.place(x=580, y=525, width=195, height=65)
+        self.frame5.place(x=580, y=600, width=300, height=65)
 
         Label(self.frame5, text= "Coste: ").place(x=10, y=5)        
 
