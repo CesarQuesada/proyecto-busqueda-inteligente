@@ -81,15 +81,19 @@ class Mi_Interfaz(Frame):
         coste = str(nodo_solucion.get_coste())
         
         # Obtener la figura de la ruta
-        figura_ruta = mostrar_ruta_en_mapa(mapaTexturas, resultado)
-        if valido1 == True and valido2 == True:
-            if self.canvas_widget:
-                self.canvas_widget.destroy()
+        mostrar_ruta_en_mapa(mapaTexturas, resultado)
+        self.imagenSeleccionada = "imagenes/solucion.png"
+        self.fondo1_image = PhotoImage(file=self.imagenSeleccionada)
+        self.fondo1["image"] = self.fondo1_image
+        
+        #if valido1 == True and valido2 == True:
+        #    if self.canvas_widget:
+        #        self.canvas_widget.destroy()
         # Crear un widget de Canvas para la ruta
-            canvas = FigureCanvasTkAgg(figura_ruta, master=self)
-            self.canvas_widget = canvas.get_tk_widget()
+        #    canvas = FigureCanvasTkAgg(figura_ruta, master=self)
+        #    self.canvas_widget = canvas.get_tk_widget()
         # Colocar el canvas_widget
-            self.canvas_widget.place(in_=self.fondo1, x=53, y=-17)
+        #   self.canvas_widget.place(in_=self.fondo1, x=53, y=-17)
             
         #Código de diferentes cuadros de texto:
         cuadroParaMostrarOrigen = Entry(self.frame4)
@@ -181,8 +185,8 @@ class Mi_Interfaz(Frame):
 
         def imagenDeFondo():
             # Destruir el widget del lienzo existente, si hay
-            if self.canvas_widget:
-                self.canvas_widget.destroy()
+            #if self.canvas_widget:
+            #    self.canvas_widget.destroy()
 
             mapa = self.lista_mapas.get()
             if mapa == 'Mapa 1':

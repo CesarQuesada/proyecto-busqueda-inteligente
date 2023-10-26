@@ -76,9 +76,22 @@ def mostrar_ruta_en_mapa(mapa, ruta):
     # Mostrar solo el número de casilla y las texturas
     plt.tick_params(axis='both', which='both', bottom=False, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)
+    
+    # Calcular el DPI necesario para mantener el tamaño y resolución especificados
+    dpi = 71.575  # Establecer el DPI deseado
+
+    # Asegurarse de que la figura se muestre con el DPI correcto
+    fig.set_dpi(dpi)
+
+    # Guardar la figura en formato .png en la carpeta "imagenes"
+    fig.savefig('imagenes/solucion.png', bbox_inches='tight', pad_inches=0, dpi=dpi)
+
+
+    # Cierra la figura para liberar recursos
+    plt.close(fig)
 
     # Retornar la figura y el eje
-    return fig
+    #return fig
 
 
 if __name__=="__main__":
@@ -98,10 +111,10 @@ if __name__=="__main__":
             """
     
     # Ruta de Prueba
-    #ruta = ['b1', 'c1', 'd1', 'd2', 'd3', 'd4']
-    ruta =[]
+    ruta = ['b1', 'c1', 'd1', 'd2', 'd3', 'd4']
+    #ruta =[]
     # Mostrar el mapa con la ruta
-    figura = mostrar_ruta_en_mapa(mapaNuevoTexturas, ruta)
+    mostrar_ruta_en_mapa(mapaNuevoTexturas, ruta)
     
     # Mostrar la figura
     plt.show()
